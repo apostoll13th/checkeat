@@ -95,25 +95,25 @@ val bottomNavItems = listOf(
 
 @Composable
 fun CameraScreen() {
-    com.checkeat.presentation.common.CameraScreenContent()
+    com.checkeat.presentation.camera.CameraScreen()
 }
 
 @Composable
 fun HistoryScreen() {
-    com.checkeat.presentation.common.HistoryScreenContent()
+    com.checkeat.presentation.history.HistoryScreen()
 }
 
 @Composable
 fun StatsScreen() {
-    com.checkeat.presentation.common.StatsScreenContent()
+    com.checkeat.presentation.stats.StatsScreen()
 }
 
 @Composable
 fun NotesScreen() {
-    com.checkeat.presentation.common.NotesScreenContent()
+    com.checkeat.presentation.notes.NotesScreen()
 }
 
 @Composable
 fun ProfileScreen() {
-    com.checkeat.presentation.common.ProfileScreenContent()
+    com.checkeat.presentation.profile.ProfileScreen()
 }
