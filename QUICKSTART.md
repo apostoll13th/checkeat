@@ -1,20 +1,26 @@
-# Быстрый старт CheckEat
+# CheckEat - Быстрый старт
+
+Минимально необходимые шаги для запуска CheckEat с первого раза без ошибок.
 
 ## 🚀 Запуск за 5 минут
 
 ### 1. Запуск Backend
 
 ```bash
+# Клонируйте репозиторий (если еще не сделано)
+git clone <repository-url>
+cd checkeat
+
 # Создайте .env файл
-cd backend
 cp .env.example .env
 
 # Добавьте ваш Anthropic API ключ в .env
-# ANTHROPIC_API_KEY=sk-ant-xxx...
+nano .env
+# или
+echo "ANTHROPIC_API_KEY=sk-ant-your-key-here" >> .env
 
-# Запустите через Docker
-cd ..
-docker-compose up -d
+# Запустите backend через Docker
+docker compose up -d
 
 # Проверьте что всё работает
 curl http://localhost:8000/health
@@ -22,6 +28,8 @@ curl http://localhost:8000/health
 ```
 
 **API документация**: http://localhost:8000/docs
+
+**Важно:** Убедитесь что Docker Desktop запущен!
 
 ### 2. Тестирование API
 
@@ -45,45 +53,78 @@ curl -X POST http://localhost:8000/api/v1/analyze \
 
 ### 3. Запуск Android приложения
 
+#### Вариант A: В Android Studio
+
 ```bash
-# Откройте Android Studio
-# File -> Open -> выберите папку android/
+# 1. Откройте Android Studio
+# 2. File -> Open -> выберите папку android/
+# 3. Дождитесь синхронизации Gradle (5-10 минут при первом запуске)
+# 4. Нажмите Run (зелёная кнопка play)
+# 5. Выберите эмулятор
 
-# Дождитесь синхронизации Gradle
-
-# Нажмите Run (зелёная кнопка)
-# Выберите эмулятор или устройство
+# API URL уже настроен для эмулятора: http://10.0.2.2:8000
 ```
 
-## 📝 Что реализовано
+#### Вариант B: Собрать APK через Docker
+
+```bash
+# Debug APK
+make android-build
+
+# APK будет в:
+# android/app/build/outputs/apk/dev/debug/app-dev-debug.apk
+
+# Установить на устройство
+adb install android/app/build/outputs/apk/dev/debug/app-dev-debug.apk
+```
+
+#### Для реального устройства (Samsung S25 Ultra и др.)
+
+```bash
+# 1. Узнайте IP компьютера
+ifconfig | grep inet  # Mac/Linux
+ipconfig              # Windows
+
+# 2. Отредактируйте android/app/build.gradle.kts (строка 59):
+# buildConfigField("String", "API_BASE_URL", "\"http://YOUR_IP:8000/api/v1/\"")
+
+# 3. Соберите
+cd android && ./gradlew assembleDevDebug
+
+# 4. Установите
+adb install app/build/outputs/apk/dev/debug/app-dev-debug.apk
+```
+
+**Подробная инструкция:** [SAMSUNG_S25_ULTRA_SETUP.md](./SAMSUNG_S25_ULTRA_SETUP.md)
+
+## ✅ Что реализовано
 
 ### Backend (100% готов)
-- ✅ Регистрация и вход
-- ✅ Анализ фото через Claude Vision
-- ✅ История анализов
-- ✅ Система заметок (CRUD)
+- ✅ Регистрация и вход (JWT)
+- ✅ Анализ фото через Claude Vision AI
+- ✅ История анализов с фильтрами
+- ✅ Система заметок (CRUD + поиск)
 - ✅ Статистика (день/неделя/месяц)
+- ✅ Экспорт данных (CSV)
 - ✅ Docker контейнеризация
+- ✅ CI/CD pipeline
+- ✅ Система бекапов
 
-### Android (Базовая структура)
-- ✅ Gradle конфигурация
-- ✅ Clean Architecture
-- ✅ Hilt DI
-- ✅ Навигация
-- ⚠️ UI экраны (заглушки - нужно реализовать)
-
-## 🔧 Что нужно доработать в Android
-
-1. **Room Database** - создать entities и DAOs
-2. **Retrofit API** - создать API interface
-3. **Repository** - реализовать data layer
-4. **ViewModels** - создать для каждого экрана
-5. **UI Screens** - реализовать полноценные экраны:
-   - CameraScreen (CameraX + загрузка фото)
-   - HistoryScreen (список анализов)
-   - StatsScreen (графики)
-   - NotesScreen (CRUD заметок)
-   - ProfileScreen (настройки)
+### Android (Production-ready структура)
+- ✅ Jetpack Compose + Material Design 3
+- ✅ Clean Architecture (Data/Domain/Presentation)
+- ✅ Hilt Dependency Injection
+- ✅ Room Database (7 entities, DAOs)
+- ✅ Retrofit + OkHttp API client
+- ✅ ViewModels для всех экранов
+- ✅ Repository pattern
+- ✅ Navigation с Bottom Bar
+- ✅ Трекинг воды
+- ✅ Трекинг веса
+- ✅ Ежедневные задачи (ToDo)
+- ✅ Система целей
+- ✅ Избранные блюда
+- ✅ Полная совместимость с Samsung S25 Ultra (Android 15)
 
 ## 📚 Полезные команды
 
