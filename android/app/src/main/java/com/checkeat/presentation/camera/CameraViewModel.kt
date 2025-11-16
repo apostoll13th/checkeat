@@ -34,51 +34,44 @@ class CameraViewModel @Inject constructor(
         viewModelScope.launch {
             _analysisState.value = UiState.Loading
 
-            try {
-                val requestFile = imageFile.asRequestBody("image/*".toMediaTypeOrNull())
-                val body = MultipartBody.Part.createFormData("file", imageFile.name, requestFile)
+            val requestFile = imageFile.asRequestBody("image/*".toMediaTypeOrNull())
+            val body = MultipartBody.Part.createFormData("file", imageFile.name, requestFile)
 
-                val result = repository.analyzeFood(body)
+            val result = repository.analyzeFood(body)
 
-                result.fold(
-                    onSuccess = { dto ->
-                        // Здесь нужно конвертировать DTO в доменную модель
-                        // Для упрощения используем временную заглушку
-                        _analysisState.value = UiState.Success(
-                            FoodAnalysis(
-                                id = dto.id,
-                                userId = dto.userId,
-                                imageUrl = dto.imageUrl,
-                                calories = dto.calories,
-                                proteins = dto.proteins,
-                                fats = dto.fats,
-                                carbs = dto.carbs,
-                                ingredients = dto.ingredients.map {
-                                    com.checkeat.domain.model.Ingredient(it.name, it.amount)
-                                },
-                                healthTips = dto.healthTips,
-                                tasteTips = dto.tasteTips,
-                                dishes = dto.dishes.map {
-                                    com.checkeat.domain.model.Dish(
-                                        it.name, it.portionG, it.calories,
-                                        it.proteins, it.fats, it.carbs
-                                    )
-                                },
-                                createdAt = java.util.Date()
-                            )
+            result.fold(
+                onSuccess = { dto ->
+                    // Конвертируем DTO в доменную модель
+                    _analysisState.value = UiState.Success(
+                        FoodAnalysis(
+                            id = dto.id,
+                            userId = dto.userId,
+                            imageUrl = dto.imageUrl,
+                            calories = dto.calories,
+                            proteins = dto.proteins,
+                            fats = dto.fats,
+                            carbs = dto.carbs,
+                            ingredients = dto.ingredients.map {
+                                com.checkeat.domain.model.Ingredient(it.name, it.amount)
+                            },
+                            healthTips = dto.healthTips,
+                            tasteTips = dto.tasteTips,
+                            dishes = dto.dishes.map {
+                                com.checkeat.domain.model.Dish(
+                                    it.name, it.portionG, it.calories,
+                                    it.proteins, it.fats, it.carbs
+                                )
+                            },
+                            createdAt = java.util.Date()
                         )
-                    },
-                    onFailure = { error ->
-                        _analysisState.value = UiState.Error(
-                            error.message ?: "Ошибка при анализе фото"
-                        )
-                    }
-                )
-            } catch (e: Exception) {
-                _analysisState.value = UiState.Error(
-                    e.message ?: "Неизвестная ошибка"
-                )
-            }
+                    )
+                },
+                onFailure = { error ->
+                    _analysisState.value = UiState.Error(
+                        error.message ?: "Ошибка при анализе фото"
+                    )
+                }
+            )
         }
     }
 

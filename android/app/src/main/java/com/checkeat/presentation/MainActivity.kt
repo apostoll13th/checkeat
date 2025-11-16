@@ -18,6 +18,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.checkeat.presentation.camera.CameraScreen
+import com.checkeat.presentation.history.HistoryScreen
+import com.checkeat.presentation.notes.NotesScreen
+import com.checkeat.presentation.profile.ProfileScreen
+import com.checkeat.presentation.stats.StatsScreen
 import com.checkeat.presentation.theme.CheckEatTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -92,28 +97,3 @@ val bottomNavItems = listOf(
     Screen.Notes,
     Screen.Profile
 )
-
-@Composable
-fun CameraScreen() {
-    com.checkeat.presentation.camera.CameraScreen()
-}
-
-@Composable
-fun HistoryScreen() {
-    com.checkeat.presentation.history.HistoryScreen()
-}
-
-@Composable
-fun StatsScreen() {
-    com.checkeat.presentation.stats.StatsScreen()
-}
-
-@Composable
-fun NotesScreen() {
-    com.checkeat.presentation.notes.NotesScreen()
-}
-
-@Composable
-fun ProfileScreen() {
-    com.checkeat.presentation.profile.ProfileScreen()
-}

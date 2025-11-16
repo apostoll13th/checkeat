@@ -22,7 +22,9 @@ fun NotesScreen(
     viewModel: NotesViewModel = hiltViewModel()
 ) {
     val notesState by viewModel.notesState.collectAsState()
+    val searchQuery by viewModel.searchQuery.collectAsState()
     var showCreateDialog by remember { mutableStateOf(false) }
+    var showSearchBar by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -38,12 +40,39 @@ fun NotesScreen(
                 text = "Заметки",
                 style = MaterialTheme.typography.headlineMedium
             )
-            FloatingActionButton(
-                onClick = { showCreateDialog = true },
-                containerColor = MaterialTheme.colorScheme.primary
-            ) {
-                Icon(Icons.Default.Add, contentDescription = "Добавить")
+            Row {
+                IconButton(onClick = { showSearchBar = !showSearchBar }) {
+                    Icon(
+                        if (showSearchBar) Icons.Default.Close else Icons.Default.Search,
+                        contentDescription = "Поиск"
+                    )
+                }
+                FloatingActionButton(
+                    onClick = { showCreateDialog = true },
+                    containerColor = MaterialTheme.colorScheme.primary
+                ) {
+                    Icon(Icons.Default.Add, contentDescription = "Добавить")
+                }
             }
+        }
+
+        if (showSearchBar) {
+            Spacer(modifier = Modifier.height(16.dp))
+            OutlinedTextField(
+                value = searchQuery,
+                onValueChange = { viewModel.updateSearchQuery(it) },
+                modifier = Modifier.fillMaxWidth(),
+                placeholder = { Text("Поиск по заметкам...") },
+                leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+                trailingIcon = {
+                    if (searchQuery.isNotEmpty()) {
+                        IconButton(onClick = { viewModel.clearSearch() }) {
+                            Icon(Icons.Default.Clear, contentDescription = "Очистить")
+                        }
+                    }
+                },
+                singleLine = true
+            )
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -60,14 +89,18 @@ fun NotesScreen(
             is UiState.Success -> {
                 val notes = (notesState as UiState.Success).data
                 if (notes.isEmpty()) {
-                    EmptyNotesState()
+                    EmptyNotesState(
+                        hasSearchQuery = searchQuery.isNotEmpty(),
+                        onClearSearch = { viewModel.clearSearch() }
+                    )
                 } else {
                     LazyColumn(
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        items(notes) { note ->
+                        items(notes, key = { it.id }) { note ->
                             NoteItem(
                                 note = note,
+                                searchQuery = searchQuery,
                                 onDelete = { viewModel.deleteNote(it) }
                             )
                         }
@@ -80,10 +113,19 @@ fun NotesScreen(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(
-                        "Ошибка: $error",
-                        color = MaterialTheme.colorScheme.error
-                    )
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Icon(
+                            Icons.Default.Error,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.error,
+                            modifier = Modifier.size(48.dp)
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            "Ошибка: $error",
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    }
                 }
             }
             else -> {}
@@ -105,6 +147,7 @@ fun NotesScreen(
 @Composable
 fun NoteItem(
     note: NoteEntity,
+    searchQuery: String = "",
     onDelete: (Int) -> Unit
 ) {
     var showDeleteDialog by remember { mutableStateOf(false) }
@@ -256,7 +299,10 @@ fun CreateNoteDialog(
 }
 
 @Composable
-fun EmptyNotesState() {
+fun EmptyNotesState(
+    hasSearchQuery: Boolean = false,
+    onClearSearch: () -> Unit = {}
+) {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -270,16 +316,24 @@ fun EmptyNotesState() {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                "Заметок пока нет",
+                if (hasSearchQuery) "Ничего не найдено" else "Заметок пока нет",
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                "Создайте первую заметку",
+                if (hasSearchQuery) "Попробуйте другой запрос" else "Создайте первую заметку",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.outline
             )
+            if (hasSearchQuery) {
+                Spacer(modifier = Modifier.height(16.dp))
+                TextButton(onClick = onClearSearch) {
+                    Icon(Icons.Default.Clear, contentDescription = null)
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("Очистить поиск")
+                }
+            }
         }
     }
 }
