@@ -1,0 +1,32 @@
+# Backend
+backend/.env
+backend/__pycache__/
+backend/**/__pycache__/
+backend/**/*.pyc
+backend/uploads/
+backend/logs/
+
+# Android
+android/.gradle/
+android/.idea/
+android/local.properties
+android/build/
+android/*/build/
+android/**/.cxx/
+android/*.iml
+android/*.apk
+android/*.ap_
+android/*.aab
+android/*.keystore
+
+# Docker
+docker-compose.override.yml
+
+# IDE
+.vscode/
+.DS_Store
+
+# Secrets
+*.pem
+*.key
+secrets/

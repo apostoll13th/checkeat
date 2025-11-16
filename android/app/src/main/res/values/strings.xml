@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CheckEat</string>
+
+    <!-- Навигация -->
+    <string name="nav_camera">Камера</string>
+    <string name="nav_history">История</string>
+    <string name="nav_stats">Статистика</string>
+    <string name="nav_notes">Заметки</string>
+    <string name="nav_profile">Профиль</string>
+
+    <!-- Камера -->
+    <string name="take_photo">Сфотографировать</string>
+    <string name="pick_photo">Выбрать из галереи</string>
+    <string name="analyzing">Анализ...</string>
+
+    <!-- История -->
+    <string name="history_title">История анализов</string>
+    <string name="filter">Фильтр</string>
+    <string name="search">Поиск</string>
+
+    <!-- Статистика -->
+    <string name="stats_title">Статистика питания</string>
+    <string name="calories">Калории</string>
+    <string name="proteins">Белки</string>
+    <string name="fats">Жиры</string>
+    <string name="carbs">Углеводы</string>
+    <string name="daily">За день</string>
+    <string name="weekly">За неделю</string>
+    <string name="monthly">За месяц</string>
+
+    <!-- Заметки -->
+    <string name="notes_title">Мои заметки</string>
+    <string name="add_note">Добавить заметку</string>
+    <string name="edit_note">Редактировать</string>
+    <string name="delete_note">Удалить</string>
+    <string name="note_title">Название</string>
+    <string name="note_content">Содержание</string>
+    <string name="tags">Теги</string>
+
+    <!-- Профиль -->
+    <string name="profile_title">Профиль</string>
+    <string name="logout">Выйти</string>
+    <string name="settings">Настройки</string>
+
+    <!-- Аутентификация -->
+    <string name="login">Вход</string>
+    <string name="register">Регистрация</string>
+    <string name="email">Email</string>
+    <string name="password">Пароль</string>
+    <string name="name">Имя</string>
+
+    <!-- Детали анализа -->
+    <string name="analysis_details">Детали анализа</string>
+    <string name="ingredients">Ингредиенты</string>
+    <string name="health_tips">Советы по здоровью</string>
+    <string name="taste_tips">Советы по вкусу</string>
+
+    <!-- Общие -->
+    <string name="save">Сохранить</string>
+    <string name="cancel">Отмена</string>
+    <string name="delete">Удалить</string>
+    <string name="error">Ошибка</string>
+    <string name="loading">Загрузка...</string>
+    <string name="no_data">Нет данных</string>
+</resources>
