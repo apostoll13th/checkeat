@@ -1,0 +1,3 @@
+"""
+CheckEat Backend Application
+"""

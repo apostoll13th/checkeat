@@ -29,14 +29,21 @@ Production-ready Android приложение для анализа калори
 - Дневная, недельная, месячная статистика
 - Данные для графиков калорий и БЖУ
 
-✅ **Android приложение (Базовая структура)**
+✅ **Экспорт данных**
+- Экспорт истории анализов в CSV
+- Экспорт статистики в CSV
+- Экспорт заметок в CSV
+
+✅ **Android приложение (Расширенная структура)**
 - Kotlin + Jetpack Compose
-- Material Design 3
+- Material Design 3 с улучшенными UI компонентами
 - Clean Architecture (Data/Domain/Presentation)
-- Hilt Dependency Injection
-- Room Database (структура готова)
-- Retrofit API client (структура готова)
+- Hilt Dependency Injection (полностью настроен)
+- Room Database с entities, DAOs, converters
+- Retrofit API client с полным набором эндпоинтов
+- Repository pattern для работы с данными
 - Навигация с Bottom Navigation Bar
+- Привлекательные UI экраны с пустыми состояниями
 
 ## 📋 Требования
 
@@ -169,6 +176,11 @@ checkeat/
 - `GET /api/v1/stats/monthly` - Месячная статистика
 - `GET /api/v1/stats/chart` - Данные для графиков
 
+### Экспорт
+- `GET /api/v1/export/csv/history` - Экспорт истории в CSV
+- `GET /api/v1/export/csv/stats` - Экспорт статистики в CSV
+- `GET /api/v1/export/csv/notes` - Экспорт заметок в CSV
+
 ## 🏗️ Технологический стек
 
 ### Backend
@@ -195,27 +207,41 @@ checkeat/
 
 ### Расширение Android приложения
 
-Проект содержит базовую структуру для расширения. Чтобы добавить полный функционал:
+#### ✅ Уже реализовано:
 
-#### 1. Room Database
-Создайте entities, DAOs и Database класс в `data/local/`
+1. **Room Database** - полностью настроена
+   - Entities для всех моделей
+   - DAOs с методами для работы с данными
+   - Type Converters для сложных типов
+   - AppDatabase класс
 
-#### 2. Retrofit API
-Создайте API interface в `data/remote/` с эндпоинтами
+2. **Retrofit API** - полностью настроен
+   - CheckEatApi интерфейс со всеми эндпоинтами
+   - DTOs для запросов и ответов
+   - OkHttp клиент с логированием
 
-#### 3. Repository
-Реализуйте Repository pattern в `data/repository/`
+3. **Hilt DI** - полностью настроен
+   - DatabaseModule для Room
+   - NetworkModule для Retrofit
+   - Готов к использованию в ViewModels
 
-#### 4. ViewModels
-Создайте ViewModels для каждого экрана в `presentation/`
+4. **Repository Pattern** - базовый пример
+   - FoodAnalysisRepository с основными методами
+   - Готова структура для расширения
 
-#### 5. UI Screens
-Реализуйте полноценные Compose экраны:
-- **CameraScreen** - CameraX для съёмки + загрузка фото
-- **HistoryScreen** - LazyColumn с анализами + фильтры
-- **StatsScreen** - MPAndroidChart графики
-- **NotesScreen** - CRUD заметок
-- **ProfileScreen** - настройки пользователя
+5. **UI Screens** - улучшенные компоненты
+   - Привлекательные экраны с Material Design 3
+   - Пустые состояния (Empty States)
+   - Готовые карточки и компоненты
+
+#### 🔨 Что осталось доработать:
+
+1. **ViewModels** - создать для каждого экрана
+2. **CameraX интеграция** - добавить работу с камерой
+3. **Реальные данные** - подключить Repository к UI
+4. **Обработка состояний** - Loading, Error, Success
+5. **Навигация с параметрами** - для деталей анализа
+6. **Offline-first синхронизация** - WorkManager
 
 ### Сборка APK
 

@@ -8,8 +8,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -93,35 +95,25 @@ val bottomNavItems = listOf(
 
 @Composable
 fun CameraScreen() {
-    Box(modifier = Modifier.fillMaxSize()) {
-        Text("Экран камеры - здесь будет CameraX и анализ еды", modifier = Modifier.padding(16.dp))
-    }
+    com.checkeat.presentation.common.CameraScreenContent()
 }
 
 @Composable
 fun HistoryScreen() {
-    Box(modifier = Modifier.fillMaxSize()) {
-        Text("Экран истории - здесь будет список анализов", modifier = Modifier.padding(16.dp))
-    }
+    com.checkeat.presentation.common.HistoryScreenContent()
 }
 
 @Composable
 fun StatsScreen() {
-    Box(modifier = Modifier.fillMaxSize()) {
-        Text("Экран статистики - здесь будут графики", modifier = Modifier.padding(16.dp))
-    }
+    com.checkeat.presentation.common.StatsScreenContent()
 }
 
 @Composable
 fun NotesScreen() {
-    Box(modifier = Modifier.fillMaxSize()) {
-        Text("Экран заметок - здесь будет список заметок", modifier = Modifier.padding(16.dp))
-    }
+    com.checkeat.presentation.common.NotesScreenContent()
 }
 
 @Composable
 fun ProfileScreen() {
-    Box(modifier = Modifier.fillMaxSize()) {
-        Text("Экран профиля - здесь будет информация о пользователе", modifier = Modifier.padding(16.dp))
-    }
+    com.checkeat.presentation.common.ProfileScreenContent()
 }

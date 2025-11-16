@@ -9,6 +9,7 @@ from ...db.database import get_db
 from ...models import FoodAnalysis, DailyStats
 from ...schemas import FoodAnalysisResponse, FoodAnalysisListResponse
 from ...core.security import get_current_user_id
+from ...core.config import settings
 from ...services.claude_service import ClaudeVisionService
 from ...utils.file_utils import save_upload_file, get_file_url, delete_file
 
@@ -145,6 +146,3 @@ async def delete_analysis(
 
     db.delete(analysis)
     db.commit()
-
-
-from ...core.config import settings
