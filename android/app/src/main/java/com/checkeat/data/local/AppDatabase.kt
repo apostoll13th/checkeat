@@ -16,9 +16,11 @@ import com.checkeat.data.local.entity.*
         NoteEntity::class,
         WaterIntakeEntity::class,
         DailyGoalEntity::class,
-        FavoriteEntity::class
+        FavoriteEntity::class,
+        WeightEntry::class,
+        DailyTask::class
     ],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
@@ -28,6 +30,8 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun waterIntakeDao(): WaterIntakeDao
     abstract fun dailyGoalDao(): DailyGoalDao
     abstract fun favoriteDao(): FavoriteDao
+    abstract fun weightDao(): WeightDao
+    abstract fun dailyTaskDao(): DailyTaskDao
 
     companion object {
         const val DATABASE_NAME = "checkeat_db"

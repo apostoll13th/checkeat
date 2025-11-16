@@ -61,4 +61,16 @@ object DatabaseModule {
     fun provideFavoriteDao(database: AppDatabase): FavoriteDao {
         return database.favoriteDao()
     }
+
+    @Provides
+    @Singleton
+    fun provideWeightDao(database: AppDatabase): WeightDao {
+        return database.weightDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideDailyTaskDao(database: AppDatabase): DailyTaskDao {
+        return database.dailyTaskDao()
+    }
 }

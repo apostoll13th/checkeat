@@ -14,6 +14,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.checkeat.presentation.common.UiState
 import com.checkeat.presentation.goals.GoalsViewModel
 import com.checkeat.presentation.water.WaterWidget
+import com.checkeat.presentation.weight.WeightWidget
+import com.checkeat.presentation.tasks.TasksWidget
 
 @Composable
 fun StatsScreen(
@@ -46,8 +48,18 @@ fun StatsScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        // Виджет веса
+        WeightWidget()
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         // Водный виджет
         WaterWidget()
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Виджет ежедневных задач
+        TasksWidget()
 
         Spacer(modifier = Modifier.height(16.dp))
 
