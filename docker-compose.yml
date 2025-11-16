@@ -18,6 +18,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - checkeat-network
 
   # Redis для кэширования
   redis:
@@ -32,6 +34,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - checkeat-network
 
   # Backend API
   backend:
@@ -57,8 +61,40 @@ services:
       redis:
         condition: service_healthy
     command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+    networks:
+      - checkeat-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Android APK Builder
+  android-builder:
+    build:
+      context: ./android
+      dockerfile: Dockerfile
+    container_name: checkeat_android_builder
+    volumes:
+      - ./android:/app
+      - android_build_cache:/root/.gradle
+      - android_apk_output:/app/app/build/outputs
+    environment:
+      - GRADLE_OPTS=-Dorg.gradle.daemon=false -Dorg.gradle.parallel=true -Dorg.gradle.workers.max=4
+    networks:
+      - checkeat-network
+    # Этот сервис запускается только при явном вызове
+    profiles:
+      - build
 
 volumes:
   postgres_data:
   redis_data:
   uploads_data:
+  android_build_cache:
+  android_apk_output:
+
+networks:
+  checkeat-network:
+    driver: bridge

@@ -1,0 +1,30 @@
+# Git
+.git
+.gitignore
+
+# Gradle
+.gradle
+build/
+**/build/
+*.gradle.kts.bak
+
+# Android Studio
+.idea
+*.iml
+local.properties
+
+# Generated files
+bin/
+gen/
+out/
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# APK outputs (they will be generated)
+*.apk
+*.aab

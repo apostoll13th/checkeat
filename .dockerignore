@@ -1,0 +1,73 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Documentation
+*.md
+LICENSE
+DEPLOYMENT.md
+DOCKER.md
+QUICKSTART.md
+
+# CI/CD
+.github
+
+# Python
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info
+dist
+build
+.pytest_cache
+.coverage
+htmlcov
+.mypy_cache
+
+# Environments
+.env
+.env.*
+!.env.example
+.venv
+venv/
+ENV/
+
+# Logs
+*.log
+logs/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDE
+.vscode
+.idea
+*.sublime-*
+.project
+.pydevproject
+
+# Node
+node_modules/
+npm-debug.log
+
+# Android
+android/
+*.apk
+*.aab
+
+# Uploads
+uploads/

@@ -13,6 +13,8 @@ Production-ready Android приложение для анализа калори
 - PostgreSQL база данных
 - Redis кэширование
 - Docker контейнеризация
+- CI/CD через GitHub Actions
+- Автоматические бекапы системы
 
 ✅ **Анализ еды**
 - Подсчёт калорий, белков, жиров, углеводов
@@ -44,6 +46,11 @@ Production-ready Android приложение для анализа калори
 - Repository pattern для работы с данными
 - Навигация с Bottom Navigation Bar
 - Привлекательные UI экраны с пустыми состояниями
+- Docker сборка APK
+- Трекинг воды и веса
+- Ежедневные задачи (ToDo) для мотивации
+- Система целей и прогресс-баров
+- Избранные блюда
 
 ## 📋 Требования
 
@@ -58,11 +65,14 @@ Production-ready Android приложение для анализа калори
 
 ## 🔧 Установка и запуск
 
-### Backend
+### 🐳 Docker Compose (Рекомендуется)
 
-1. **Клонируйте репозиторий и перейдите в директорию backend:**
+**Самый простой способ запустить весь проект!**
+
+1. **Клонируйте репозиторий:**
 ```bash
-cd backend
+git clone <repository-url>
+cd checkeat
 ```
 
 2. **Создайте .env файл:**
@@ -71,21 +81,74 @@ cp .env.example .env
 ```
 
 3. **Отредактируйте .env и добавьте ваш Anthropic API ключ:**
+```bash
+nano .env
+```
 ```env
 ANTHROPIC_API_KEY=your-api-key-here
-JWT_SECRET_KEY=your-jwt-secret-key
-SECRET_KEY=your-secret-key
+JWT_SECRET_KEY=$(openssl rand -hex 32)
+SECRET_KEY=$(openssl rand -hex 32)
 ```
 
-4. **Запустите сервисы через Docker Compose:**
+4. **Запустите все сервисы:**
 ```bash
-cd ..
-docker-compose up -d
+# Простой запуск
+docker compose up -d
+
+# Или используйте Makefile для удобства
+make up
 ```
 
-Backend API будет доступен на http://localhost:8000
+Backend API будет доступен на **http://localhost:8000**
 
 **API документация:** http://localhost:8000/docs
+
+#### 📱 Сборка Android APK через Docker:
+```bash
+# Debug APK
+make android-build
+
+# Release APK
+make android-release
+```
+
+APK файлы будут в `android/app/build/outputs/apk/`
+
+**Подробная документация:** См. [DOCKER.md](./DOCKER.md)
+
+#### 🎯 Полезные команды:
+```bash
+make up              # Запустить все сервисы
+make down            # Остановить все сервисы
+make logs            # Посмотреть логи
+make logs-backend    # Логи backend
+make test            # Запустить тесты
+make shell           # Зайти в backend контейнер
+make db-migrate      # Применить миграции БД
+make status          # Статус всех сервисов
+```
+
+### Backend (без Docker)
+
+Если вы хотите запустить backend локально без Docker:
+
+1. **Установите зависимости:**
+```bash
+cd backend
+pip install -r requirements.txt
+```
+
+2. **Создайте .env файл:**
+```bash
+cp .env.example .env
+```
+
+3. **Запустите PostgreSQL и Redis**
+
+4. **Запустите backend:**
+```bash
+python main.py
+```
 
 ### Android приложение
 
@@ -245,14 +308,33 @@ checkeat/
 
 ### Сборка APK
 
-#### Debug APK:
+#### 🐳 Через Docker (Рекомендуется):
+
+```bash
+# Debug APK
+make android-build
+# или
+docker compose --profile build run --rm android-builder
+
+# Release APK
+make android-release
+# или
+docker compose --profile build run --rm android-builder ./gradlew assembleRelease --no-daemon
+```
+
+APK файлы будут доступны в:
+- Debug: `android/app/build/outputs/apk/debug/app-debug.apk`
+- Release: `android/app/build/outputs/apk/release/app-release.apk`
+
+#### 🔨 Локальная сборка:
+
+**Debug APK:**
 ```bash
 cd android
 ./gradlew assembleDebug
 ```
-APK будет в `app/build/outputs/apk/debug/`
 
-#### Release APK:
+**Release APK:**
 
 1. Создайте keystore:
 ```bash
@@ -284,8 +366,6 @@ android {
 ./gradlew assembleRelease
 ```
 
-APK будет в `app/build/outputs/apk/release/`
-
 ## 📝 Примеры использования API
 
 ### Регистрация пользователя:
@@ -310,18 +390,46 @@ curl -X POST http://localhost:8000/api/v1/analyze \
 
 ### Backend логи:
 ```bash
-docker-compose logs -f backend
+# Через Makefile
+make logs-backend
+
+# Напрямую
+docker compose logs -f backend
 ```
 
 ### PostgreSQL:
 ```bash
-docker-compose exec postgres psql -U checkeat_user -d checkeat_db
+# Через Makefile
+make db-shell
+
+# Напрямую
+docker compose exec postgres psql -U checkeat_user -d checkeat_db
 ```
 
 ### Redis:
 ```bash
-docker-compose exec redis redis-cli
+docker compose exec redis redis-cli
 ```
+
+### Проверка статуса сервисов:
+```bash
+# Через Makefile
+make status
+
+# Напрямую
+docker compose ps
+```
+
+### Запуск тестов:
+```bash
+# Через Makefile
+make test
+
+# Напрямую
+docker compose exec backend pytest
+```
+
+**Подробнее:** См. [DOCKER.md](./DOCKER.md) для полного руководства по отладке
 
 ## 🔐 Безопасность
 
