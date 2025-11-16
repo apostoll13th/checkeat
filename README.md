@@ -61,7 +61,10 @@ Production-ready Android приложение для анализа калори
 ### Для Android:
 - Android Studio Hedgehog или новее
 - JDK 17
-- Android SDK (минимум API 24)
+- Android SDK (минимум API 24, целевой API 35 для Android 15)
+- **Оптимизировано для Samsung S25 Ultra** (Android 15)
+
+> 📱 **Для владельцев Samsung S25 Ultra**: См. [SAMSUNG_S25_ULTRA_SETUP.md](./SAMSUNG_S25_ULTRA_SETUP.md) для пошаговой инструкции
 
 ## 🔧 Установка и запуск
 
@@ -152,6 +155,8 @@ python main.py
 
 ### Android приложение
 
+#### Для эмулятора:
+
 1. **Откройте Android проект в Android Studio:**
 ```bash
 File -> Open -> выберите папку android/
@@ -159,16 +164,45 @@ File -> Open -> выберите папку android/
 
 2. **Дождитесь синхронизации Gradle**
 
-3. **Измените API URL в app/build.gradle.kts при необходимости:**
-```kotlin
-buildConfigField("String", "API_BASE_URL", "\"http://10.0.2.2:8000/api/v1/\"")
-// 10.0.2.2 - это localhost для эмулятора Android
-// Для реального устройства используйте IP адрес вашего компьютера
-```
-
-4. **Запустите приложение:**
+3. **Запустите приложение:**
 - Нажмите Run (зелёная кнопка play)
-- Выберите эмулятор или подключенное устройство
+- Выберите эмулятор
+- API URL уже настроен для эмулятора (`http://10.0.2.2:8000`)
+
+#### Для реального устройства (Samsung S25 Ultra и др.):
+
+1. **Узнайте IP адрес вашего компьютера:**
+   ```bash
+   # Mac/Linux
+   ifconfig | grep inet
+
+   # Windows
+   ipconfig
+   ```
+
+2. **Измените API URL в `android/app/build.gradle.kts`:**
+   ```kotlin
+   productFlavors {
+       create("dev") {
+           // Замените на IP вашего компьютера!
+           buildConfigField("String", "API_BASE_URL", "\"http://192.168.1.100:8000/api/v1/\"")
+       }
+   }
+   ```
+
+3. **Соберите Dev APK:**
+   ```bash
+   make android-build
+   # или
+   cd android && ./gradlew assembleDevDebug
+   ```
+
+4. **Установите на устройство:**
+   ```bash
+   adb install android/app/build/outputs/apk/dev/debug/app-dev-debug.apk
+   ```
+
+> 📱 **Подробная инструкция для Samsung S25 Ultra**: [SAMSUNG_S25_ULTRA_SETUP.md](./SAMSUNG_S25_ULTRA_SETUP.md)
 
 ## 📚 Структура проекта
 

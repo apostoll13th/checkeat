@@ -6,11 +6,20 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
+
+    <!-- Для Android 12 и ниже -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28"
         tools:ignore="ScopedStorage" />
+
+    <!-- Для Android 13+ (включая Samsung S25 Ultra) -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+
+    <!-- Для уведомлений на Android 13+ (опционально) -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <!-- Требования камеры -->
     <uses-feature
@@ -30,8 +39,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CheckEat"
-        android:usesCleartextTraffic="true"
-        tools:targetApi="31">
+        android:networkSecurityConfig="@xml/network_security_config"
+        tools:targetApi="35">
 
         <activity
             android:name=".presentation.MainActivity"

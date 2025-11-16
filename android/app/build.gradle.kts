@@ -7,12 +7,12 @@ plugins {
 
 android {
     namespace = "com.checkeat"
-    compileSdk = 34
+    compileSdk = 35  // Обновлено для Android 15 (S25 Ultra)
 
     defaultConfig {
         applicationId = "com.checkeat"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35  // Обновлено для Android 15 (S25 Ultra)
         versionCode = 1
         versionName = "1.0.0"
 
@@ -22,19 +22,46 @@ android {
             useSupportLibrary = true
         }
 
-        // API URL
+        // API URL - по умолчанию для эмулятора
         buildConfigField("String", "API_BASE_URL", "\"http://10.0.2.2:8000/api/v1/\"")
     }
 
     buildTypes {
+        debug {
+            // Для эмулятора
+            buildConfigField("String", "API_BASE_URL", "\"http://10.0.2.2:8000/api/v1/\"")
+        }
         release {
             isMinifyEnabled = true
             isShrinkResources = true
+
+            // Для реального устройства - замените YOUR_COMPUTER_IP на IP вашего компьютера
+            // Узнать IP: ifconfig (Mac/Linux) или ipconfig (Windows)
+            // Например: "http://192.168.1.100:8000/api/v1/"
+            buildConfigField("String", "API_BASE_URL", "\"http://YOUR_COMPUTER_IP:8000/api/v1/\"")
+
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.getByName("debug") // Изменить на release
+            signingConfig = signingConfigs.getByName("debug") // TODO: Изменить на release keystore
+        }
+    }
+
+    // Build variants для удобства разработки
+    flavorDimensions += "environment"
+    productFlavors {
+        create("dev") {
+            dimension = "environment"
+            applicationIdSuffix = ".dev"
+            versionNameSuffix = "-dev"
+            // Для разработки на реальном устройстве
+            buildConfigField("String", "API_BASE_URL", "\"http://192.168.1.100:8000/api/v1/\"")
+        }
+        create("prod") {
+            dimension = "environment"
+            // Production API URL (когда будет деплой)
+            buildConfigField("String", "API_BASE_URL", "\"https://your-production-api.com/api/v1/\"")
         }
     }
 
