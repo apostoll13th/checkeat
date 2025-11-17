@@ -10,11 +10,11 @@ from ...models import FoodAnalysis, DailyStats
 from ...schemas import FoodAnalysisResponse, FoodAnalysisListResponse
 from ...core.security import get_current_user_id
 from ...core.config import settings
-from ...services.claude_service import ClaudeVisionService
+from ...services.openai_service import OpenAIVisionService
 from ...utils.file_utils import save_upload_file, get_file_url, delete_file
 
 router = APIRouter(prefix="/analyze", tags=["Анализ еды"])
-claude_service = ClaudeVisionService()
+openai_service = OpenAIVisionService()
 
 
 @router.post("", response_model=FoodAnalysisResponse, status_code=status.HTTP_201_CREATED)
@@ -28,8 +28,8 @@ async def analyze_food(
         # Сохранение файла
         file_path = save_upload_file(file, user_id)
 
-        # Анализ через Claude
-        result = await claude_service.analyze_food_image(file_path)
+        # Анализ через ChatGPT Vision (GPT-4 Vision)
+        result = await openai_service.analyze_food_image(file_path)
 
         # Сохранение в БД
         analysis = FoodAnalysis(

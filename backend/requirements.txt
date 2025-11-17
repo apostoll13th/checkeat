@@ -15,8 +15,8 @@ python-jose[cryptography]==3.3.0
 passlib[bcrypt]==1.7.4
 python-dotenv==1.0.0
 
-# Anthropic Claude API
-anthropic==0.25.0
+# OpenAI ChatGPT API (включая GPT-4 Vision)
+openai==1.6.1
 
 # Работа с изображениями
 Pillow==10.2.0

@@ -1,6 +1,6 @@
 # CheckEat - AI-приложение для анализа калорий и питательности еды
 
-Production-ready Android приложение для анализа калорий и питательности еды по фотографиям с системой заметок, powered by Claude AI.
+Production-ready Android приложение для анализа калорий и питательности еды по фотографиям с системой заметок, powered by ChatGPT AI.
 
 ## 🚀 Основной функционал
 
@@ -8,7 +8,7 @@ Production-ready Android приложение для анализа калори
 
 ✅ **Backend API (FastAPI)**
 - Полноценный RESTful API на FastAPI
-- Интеграция с Claude Vision API для анализа фото еды
+- Интеграция с ChatGPT Vision API (GPT-4 Vision) для анализа фото еды
 - JWT аутентификация
 - PostgreSQL база данных
 - Redis кэширование
@@ -56,7 +56,7 @@ Production-ready Android приложение для анализа калори
 
 ### Для Backend:
 - Docker и Docker Compose
-- Anthropic API ключ (Claude)
+- Anthropic API ключ (ChatGPT)
 
 ### Для Android:
 - Android Studio Hedgehog или новее
@@ -220,7 +220,7 @@ checkeat/
 │   │   ├── models/            # SQLAlchemy модели
 │   │   ├── schemas/           # Pydantic схемы
 │   │   ├── services/          # Бизнес-логика
-│   │   │   └── claude_service.py  # Claude Vision AI
+│   │   │   └── claude_service.py  # ChatGPT Vision AI
 │   │   └── utils/             # Утилиты
 │   ├── main.py                # Главный файл FastAPI
 │   ├── requirements.txt       # Python зависимости
@@ -285,7 +285,7 @@ checkeat/
 - **PostgreSQL** - база данных
 - **SQLAlchemy** - ORM
 - **Redis** - кэширование
-- **Anthropic Claude** - AI анализ изображений
+- **Anthropic ChatGPT** - AI анализ изображений
 - **JWT** - аутентификация
 - **Docker** - контейнеризация
 
@@ -506,11 +506,11 @@ MIT License
 
 ## 👨‍💻 Автор
 
-Создано с использованием Claude AI
+Создано с использованием ChatGPT AI
 
 ## 🙏 Благодарности
 
-- Anthropic за Claude AI
+- Anthropic за ChatGPT AI
 - JetBrains за Kotlin и Android Studio
 - Команде FastAPI
 

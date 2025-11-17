@@ -54,7 +54,7 @@ services:
     environment:
       # Основные настройки
       APP_NAME: CheckEat API
-      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
 
       # База данных
       DATABASE_URL: postgresql://${DB_USER:-checkeat_user}:${DB_PASSWORD}@postgres:5432/${DB_NAME:-checkeat}

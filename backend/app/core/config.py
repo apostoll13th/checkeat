@@ -23,9 +23,9 @@ class Settings(BaseSettings):
     # Redis
     REDIS_URL: str = "redis://localhost:6379/0"
 
-    # Anthropic Claude API
-    ANTHROPIC_API_KEY: str = ""
-    CLAUDE_MODEL: str = "claude-sonnet-4-5-20250929"
+    # OpenAI ChatGPT API
+    OPENAI_API_KEY: str = ""
+    OPENAI_MODEL: str = "gpt-4-vision-preview"  # или "gpt-4o" для новейшей модели
 
     # JWT
     JWT_SECRET_KEY: str = "your-jwt-secret-key"

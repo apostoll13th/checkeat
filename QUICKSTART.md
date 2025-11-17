@@ -14,10 +14,10 @@ cd checkeat
 # Создайте .env файл
 cp .env.example .env
 
-# Добавьте ваш Anthropic API ключ в .env
+# Добавьте ваш OpenAI ChatGPT API ключ в .env
 nano .env
 # или
-echo "ANTHROPIC_API_KEY=sk-ant-your-key-here" >> .env
+echo "OPENAI_API_KEY=sk-your-openai-key-here" >> .env
 
 # Запустите backend через Docker
 docker compose up -d
@@ -101,7 +101,7 @@ adb install app/build/outputs/apk/dev/debug/app-dev-debug.apk
 
 ### Backend (100% готов)
 - ✅ Регистрация и вход (JWT)
-- ✅ Анализ фото через Claude Vision AI
+- ✅ Анализ фото через ChatGPT Vision (GPT-4 Vision)
 - ✅ История анализов с фильтрами
 - ✅ Система заметок (CRUD + поиск)
 - ✅ Статистика (день/неделя/месяц)
