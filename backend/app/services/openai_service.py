@@ -1,5 +1,5 @@
 """
-Сервис для работы с OpenAI ChatGPT Vision API (GPT-4 Vision)
+Сервис для работы с OpenAI ChatGPT Vision API (GPT-5 Mini)
 """
 import base64
 import json
@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 class OpenAIVisionService:
-    """Сервис для анализа еды через ChatGPT Vision (GPT-4 Vision)"""
+    """Сервис для анализа еды через ChatGPT Vision (GPT-5 Mini)"""
 
     def __init__(self):
         self.client = AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
@@ -71,7 +71,7 @@ class OpenAIVisionService:
 
     async def analyze_food_image(self, image_path: str) -> FoodAnalysisResult:
         """
-        Анализ изображения еды через ChatGPT Vision (GPT-4 Vision)
+        Анализ изображения еды через ChatGPT Vision (GPT-5 Mini)
 
         Args:
             image_path: Путь к изображению

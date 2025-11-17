@@ -28,7 +28,7 @@ async def analyze_food(
         # Сохранение файла
         file_path = save_upload_file(file, user_id)
 
-        # Анализ через ChatGPT Vision (GPT-4 Vision)
+        # Анализ через ChatGPT Vision (GPT-5 Mini)
         result = await openai_service.analyze_food_image(file_path)
 
         # Сохранение в БД

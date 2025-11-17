@@ -25,7 +25,7 @@ class Settings(BaseSettings):
 
     # OpenAI ChatGPT API
     OPENAI_API_KEY: str = ""
-    OPENAI_MODEL: str = "gpt-4o"  # Новейшая модель с Vision (рекомендуется). Альтернативы: "gpt-4o-mini" (быстрее, дешевле)
+    OPENAI_MODEL: str = "gpt-5-mini"  # GPT-5 Mini (август 2025): Vision + 400k context. Альтернативы: "gpt-5" (полная), "gpt-5-nano" (легкая)
 
     # JWT
     JWT_SECRET_KEY: str = "your-jwt-secret-key"
