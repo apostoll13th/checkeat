@@ -5,7 +5,7 @@ import base64
 import json
 import logging
 from typing import Dict
-from openai import OpenAI
+from openai import AsyncOpenAI
 from ..core.config import settings
 from ..schemas.food_analysis import FoodAnalysisResult, DishInfo, Ingredient, NutritionTotal
 
@@ -16,7 +16,7 @@ class OpenAIVisionService:
     """Сервис для анализа еды через ChatGPT Vision (GPT-4 Vision)"""
 
     def __init__(self):
-        self.client = OpenAI(api_key=settings.OPENAI_API_KEY)
+        self.client = AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
         self.model = settings.OPENAI_MODEL
 
     def _encode_image(self, image_path: str) -> str:
@@ -95,7 +95,7 @@ class OpenAIVisionService:
             # Отправляем запрос в ChatGPT Vision
             logger.info(f"Отправка запроса в ChatGPT Vision для анализа {image_path}")
 
-            response = self.client.chat.completions.create(
+            response = await self.client.chat.completions.create(
                 model=self.model,
                 messages=[
                     {
@@ -124,17 +124,7 @@ class OpenAIVisionService:
             logger.info(f"Получен ответ от ChatGPT Vision: {response_text[:200]}...")
 
             # Парсим JSON из ответа
-            try:
-                result_dict = json.loads(response_text)
-            except json.JSONDecodeError:
-                # Пытаемся извлечь JSON из текста (на случай если есть обрамляющий текст)
-                start_idx = response_text.find('{')
-                end_idx = response_text.rfind('}') + 1
-                if start_idx != -1 and end_idx != 0:
-                    json_str = response_text[start_idx:end_idx]
-                    result_dict = json.loads(json_str)
-                else:
-                    raise ValueError("Не удалось распарсить ответ от ChatGPT Vision")
+            result_dict = self._parse_json_response(response_text)
 
             # Преобразуем в Pydantic модель
             result = self._parse_result(result_dict)
@@ -145,6 +135,49 @@ class OpenAIVisionService:
         except Exception as e:
             logger.error(f"Ошибка при анализе изображения через ChatGPT Vision: {str(e)}", exc_info=True)
             raise
+
+    def _parse_json_response(self, response_text: str) -> Dict:
+        """
+        Надежный парсинг JSON из ответа ChatGPT
+        Поддерживает различные форматы (чистый JSON, markdown блоки, текст с JSON)
+        """
+        # Удаляем возможные markdown блоки ```json ... ```
+        text = response_text.strip()
+
+        # Если есть markdown блок с json
+        if "```json" in text:
+            start = text.find("```json") + 7
+            end = text.find("```", start)
+            if end != -1:
+                text = text[start:end].strip()
+        elif "```" in text:
+            # Просто markdown блок без языка
+            start = text.find("```") + 3
+            end = text.find("```", start)
+            if end != -1:
+                text = text[start:end].strip()
+
+        # Пытаемся распарсить как есть
+        try:
+            return json.loads(text)
+        except json.JSONDecodeError as e:
+            logger.warning(f"Не удалось распарсить JSON напрямую: {e}")
+
+            # Пытаемся найти JSON объект в тексте
+            start_idx = text.find('{')
+            end_idx = text.rfind('}') + 1
+
+            if start_idx != -1 and end_idx > start_idx:
+                json_str = text[start_idx:end_idx]
+                try:
+                    return json.loads(json_str)
+                except json.JSONDecodeError as e2:
+                    logger.error(f"Не удалось извлечь JSON из текста: {e2}")
+                    logger.error(f"Исходный текст: {response_text}")
+                    raise ValueError(f"Не удалось распарсить ответ от ChatGPT Vision. Ошибка: {e2}")
+            else:
+                logger.error(f"Не найден JSON объект в ответе: {response_text}")
+                raise ValueError("Не удалось найти JSON объект в ответе от ChatGPT Vision")
 
     def _parse_result(self, data: Dict) -> FoodAnalysisResult:
         """Преобразование словаря в FoodAnalysisResult"""

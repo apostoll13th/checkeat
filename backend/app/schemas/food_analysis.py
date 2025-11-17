@@ -31,7 +31,7 @@ class NutritionTotal(BaseModel):
 
 
 class FoodAnalysisResult(BaseModel):
-    """Результат анализа от Claude"""
+    """Результат анализа от ChatGPT Vision"""
     dishes: List[DishInfo]
     total: NutritionTotal
     ingredients: List[Ingredient]
