@@ -22,10 +22,10 @@ class FoodAnalysis(Base):
     carbs = Column(Float, nullable=False)
 
     # Детальная информация в JSON
-    ingredients_json = Column(JSON, default=[])  # Список ингредиентов
-    health_tips_json = Column(JSON, default=[])  # Советы по здоровью
-    taste_tips_json = Column(JSON, default=[])  # Советы по вкусу
-    dishes_json = Column(JSON, default=[])  # Информация о блюдах
+    ingredients_json = Column(JSON, default=list)  # Список ингредиентов
+    health_tips_json = Column(JSON, default=list)  # Советы по здоровью
+    taste_tips_json = Column(JSON, default=list)  # Советы по вкусу
+    dishes_json = Column(JSON, default=list)  # Информация о блюдах
 
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False, index=True)
 

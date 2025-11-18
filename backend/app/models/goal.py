@@ -1,8 +1,9 @@
 """
 Модель целей пользователя
 """
-from sqlalchemy import Column, Integer, Float, String, Boolean, ForeignKey
+from sqlalchemy import Column, Integer, Float, Boolean, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
+from datetime import datetime
 from ..db.database import Base
 
 
@@ -24,7 +25,11 @@ class Goal(Base):
     target_weight_kg = Column(Float, nullable=True)  # Целевой вес (кг)
 
     # Настройки
-    is_active = Column(Boolean, default=True)  # Активна ли цель
+    is_active = Column(Boolean, default=True, nullable=False)  # Активна ли цель
+
+    # Timestamps
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
 
     # Связи
     user = relationship("User", back_populates="goals")

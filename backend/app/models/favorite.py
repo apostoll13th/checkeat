@@ -23,10 +23,10 @@ class Favorite(Base):
     portion_g = Column(Float, nullable=True)  # Размер порции (г)
 
     # Дополнительная информация
-    ingredients_json = Column(JSON, default=[])  # Ингредиенты
+    ingredients_json = Column(JSON, default=list)  # Ингредиенты
     image_url = Column(String, nullable=True)  # URL изображения
 
-    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False, index=True)
 
     # Связи
     user = relationship("User", back_populates="favorites")

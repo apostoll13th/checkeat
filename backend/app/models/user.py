@@ -16,7 +16,7 @@ class User(Base):
     password_hash = Column(String, nullable=False)
     name = Column(String, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
-    settings_json = Column(JSON, default={})
+    settings_json = Column(JSON, default=dict)
 
     # Связи
     food_analyses = relationship("FoodAnalysis", back_populates="user", cascade="all, delete-orphan")
